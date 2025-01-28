@@ -25,12 +25,9 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults())
                 .authorizeHttpRequests(req -> req
-                        // .requestMatchers(null)
-                        .anyRequest().permitAll()
-                )
-                
-        
-        
-        .build();
+                        .requestMatchers("welcome", "register").permitAll()
+                        .requestMatchers("home").authenticated()
+                        .anyRequest().denyAll()
+                ).build();
     }
 }
