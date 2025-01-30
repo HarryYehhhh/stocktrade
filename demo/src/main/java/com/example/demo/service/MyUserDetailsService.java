@@ -2,8 +2,10 @@ package com.example.demo.service;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,9 +25,17 @@ public class MyUserDetailsService implements UserDetailsService{
         
         Member member = memberService.getMemberByAccount(username);
 
-        String account = member.getAccount();
-        String password = member.getPassword();
+        if (member == null){
+            throw new UsernameNotFoundException(username + "is not exist");
+        }else{
+            String account = member.getAccount();
+            String password = member.getPassword();
+            //權限設定
+            List<GrantedAuthority> auth = new ArrayList<>();
+            return new User(account, password, auth);
+        }
 
-        return new User(account, password, new ArrayList<>());
+
+
     }
 }

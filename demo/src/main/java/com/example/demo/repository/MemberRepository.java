@@ -9,5 +9,5 @@ import com.example.demo.model.Member;
 public interface MemberRepository extends JpaRepository<Member, Integer> {
     
     Member getMemberByAccount(String account);
-    // Member createMember();
+    Member getMemberByMemberId(Integer id);
 } 

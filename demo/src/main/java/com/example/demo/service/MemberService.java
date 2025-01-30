@@ -12,7 +12,10 @@ public class MemberService {
     @Autowired
     private MemberRepository memberRepository;
 
-    public Member registerMember(Member member){
+    public Member createMember(Member member){
+        
+        
+
         return memberRepository.save(member);
     }
 
@@ -20,5 +23,8 @@ public class MemberService {
         return memberRepository.getMemberByAccount(account);
     }
 
+    public Member getMemberByMemberId(Integer uid){
+        return memberRepository.getMemberByMemberId(uid);
+    }
 
 }
