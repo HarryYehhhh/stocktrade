@@ -6,17 +6,15 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig {
+@EnableWebSecurity(debug = true)
+public class MySecurityConfig {
     
     @Bean
     public PasswordEncoder passwordEncoder(){
-        // return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
@@ -25,11 +23,12 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                .formLogin(login -> login.defaultSuccessUrl("/hello", true) )
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("welcome", "register").permitAll()
-                        .requestMatchers("hello").authenticated()
-                        .anyRequest().denyAll()
+                        .requestMatchers("/register").permitAll()
+                        //need add pre-word "ROLE" in DB = 'ROLE_ADMIN'
+                        .requestMatchers("/hello").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 ).build();
     }
 }

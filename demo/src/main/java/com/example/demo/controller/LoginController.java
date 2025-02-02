@@ -20,7 +20,6 @@ public class LoginController {
 
         String username = authentication.getName();
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-
         return "Hello " + username + authorities;
     }
 }
